@@ -1,4 +1,4 @@
-#define GPRMC_TERM "$GPRMS,"
+#define GPRMC_TERM "$GPRMC,"
 
 char nmeaSentence[68];
 String latitude;
@@ -82,12 +82,12 @@ String parseGprmcLat()
   int dEndLoc = 0; //direction parameter end location
   String lat;
   String s;
+  boolean keep_going = true;
   
-
   // For one second we parse GPS data and report some key values
   //for (unsigned long start = millis(); millis() - start < 1000;)
   //{
-    while (Serial2.available())
+    while (Serial2.available() && keep_going)
     {
       char c = Serial2.read();
 
@@ -97,7 +97,7 @@ String parseGprmcLat()
         Serial2.readBytesUntil(0x2A, nmeaSentence, 67);
         //Serial.println(nmeaSentence);
         s.concat(nmeaSentence);
-        break;
+        keep_going = false;
       }
     }
       
